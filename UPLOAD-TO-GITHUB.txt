@@ -1,0 +1,65 @@
+YOUR CODE IS ON YOUR PC — GITHUB IS STILL EMPTY BECAUSE PUSH DID NOT FINISH.
+Use ONE of these methods:
+
+================================================================================
+METHOD A — EASIEST: Upload on GitHub website (no git commands)
+================================================================================
+
+1. Open in browser:
+   https://github.com/ibrvhiim8/gf-proposal-
+
+2. Click "uploading an existing file" (or Add file → Upload files)
+
+3. Open folder on your PC:
+   c:\Users\ACER\OneDrive\Bureau\GF proposal
+
+4. Select ALL of these (Ctrl+A inside the folder, or drag them):
+   - index.html
+   - responses.html
+   - vercel.json
+   - .gitignore
+   - css  (whole folder)
+   - js   (whole folder)
+   - assets (whole folder)
+
+5. Scroll down → Commit message: "Add proposal site"
+   → Click "Commit changes"
+
+6. Refresh the page — you should see index.html
+
+7. Vercel → your project → Redeploy (Production branch: main)
+
+================================================================================
+METHOD B — Double-click push script
+================================================================================
+
+1. In File Explorer go to:
+   c:\Users\ACER\OneDrive\Bureau\GF proposal
+
+2. Right-click push-to-github.ps1 → Run with PowerShell
+
+3. Sign in to GitHub if asked
+
+================================================================================
+METHOD C — Cursor terminal (one line)
+================================================================================
+
+Open terminal (Ctrl + `) and paste:
+
+cd "c:\Users\ACER\OneDrive\Bureau\GF proposal"; git push -u origin main
+
+If it asks for password, use a GitHub token:
+https://github.com/settings/tokens → Generate new token (classic) → check "repo"
+
+================================================================================
+SKIP GITHUB — Deploy folder directly on Vercel
+================================================================================
+
+1. vercel.com → Add New → Project
+2. Scroll down → "Deploy without Git" or import and use Vercel CLI
+3. Or install Node from nodejs.org, then in terminal:
+   npm i -g vercel
+   cd "c:\Users\ACER\OneDrive\Bureau\GF proposal"
+   vercel
+
+Your live site will work the same either way.
