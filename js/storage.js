@@ -1,15 +1,11 @@
 /**
- * Saves proposal form data locally and optionally to a webhook (Google Sheet, etc.)
+ * Saves proposal data locally + sends to your server (Discord on Vercel).
  */
 (function () {
   'use strict';
 
   const STORAGE_KEY = 'gf_proposal_responses';
   const SESSION_KEY = 'gf_proposal_session_id';
-
-  // Paste your Google Apps Script Web App URL here to receive responses on your phone/PC
-  // See responses.html for setup instructions
-  const WEBHOOK_URL = '';
 
   function getSessionId() {
     let id = sessionStorage.getItem(SESSION_KEY);
@@ -33,23 +29,45 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
   }
 
-  async function sendToWebhook(data) {
-    if (!WEBHOOK_URL) return;
-    try {
-      await fetch(WEBHOOK_URL, {
+  function formatDiscordClient(data) {
+    const lines = [
+      '💌 Proposal site update',
+      data.compatibilityPercent != null
+        ? `Compatibility: ${data.compatibilityPercent}% — ${data.compatibilityPassed ? 'confession' : 'soft ending'}`
+        : null,
+      data.favoritePartner ? `Name: ${data.favoritePartner}` : null,
+      data.saidYes ? 'She said YES ❤️' : null,
+    ].filter(Boolean);
+    return lines.join('\n').slice(0, 1900);
+  }
+
+  async function sendNotifications(data) {
+    const tasks = [];
+
+    tasks.push(
+      fetch('/api/notify', {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-      });
-    } catch (err) {
-      console.warn('Could not send to webhook:', err);
+      }).catch(() => {})
+    );
+
+    const clientWebhook = window.PROPOSAL_CONFIG?.DISCORD_WEBHOOK_URL;
+    if (clientWebhook) {
+      tasks.push(
+        fetch(clientWebhook, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: formatDiscordClient(data) }),
+        }).catch(() => {})
+      );
     }
+
+    await Promise.allSettled(tasks);
   }
 
   window.ProposalStorage = {
     STORAGE_KEY,
-    WEBHOOK_URL,
 
     getSessionId,
 
@@ -78,7 +96,7 @@
       }
 
       saveAll(all);
-      sendToWebhook(merged);
+      sendNotifications(merged);
       return merged;
     },
   };

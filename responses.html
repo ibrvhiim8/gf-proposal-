@@ -181,7 +181,7 @@
         heroEl.innerHTML = `
           <div class="score-hero score-hero--empty">
             <div class="score-hero__label">Compatibility score</div>
-            <p class="score-hero__detail">No score yet. Finish all 10 questions on the main page, then refresh here.</p>
+            <p class="score-hero__detail">No score yet. Finish all 9 questions on the main page, then refresh here.</p>
           </div>`;
         return;
       }
@@ -190,7 +190,7 @@
         heroEl.innerHTML = `
           <div class="score-hero score-hero--empty">
             <div class="score-hero__label">Compatibility score</div>
-            <p class="score-hero__detail">Questionnaire not finished yet (need all 10 answers). Last update: ${formatDate(latest.updatedAt)}</p>
+            <p class="score-hero__detail">Questionnaire not finished yet (need all 9 answers). Last update: ${formatDate(latest.updatedAt)}</p>
           </div>`;
         return;
       }
@@ -198,14 +198,14 @@
       const pts = latest.compatibilityScore != null ? latest.compatibilityScore : '?';
       const passed = latest.compatibilityPassed === true;
       const path = passed
-        ? 'Continued to confession (70% or higher)'
-        : 'Soft ending (below 70%)';
+        ? 'Continued to confession (60% or higher)'
+        : 'Soft ending (below 60%)';
 
       heroEl.innerHTML = `
         <div class="score-hero">
           <div class="score-hero__label">Latest compatibility</div>
           <div class="score-hero__percent">${latest.compatibilityPercent}%</div>
-          <div class="score-hero__detail">${pts} / 20 points · threshold 70% (14 pts)</div>
+          <div class="score-hero__detail">${pts} / 18 points · threshold 60% (11 pts)</div>
           <span class="score-hero__path ${passed ? 'score-hero__path--pass' : ''}">${path}</span>
         </div>`;
     }
@@ -226,7 +226,7 @@
         .reverse()
         .map((e, i) => {
           const scoreLine = hasScore(e)
-            ? `<div class="row"><span class="label">Compatibility</span><span class="value"><strong>${e.compatibilityPercent}%</strong> (${e.compatibilityScore}/20)${e.compatibilityPassed ? ' · passed' : ' · soft ending'}</span></div>`
+            ? `<div class="row"><span class="label">Compatibility</span><span class="value"><strong>${e.compatibilityPercent}%</strong> (${e.compatibilityScore}/18)${e.compatibilityPassed ? ' · passed' : ' · soft ending'}</span></div>`
             : '<div class="row"><span class="label">Compatibility</span><span class="value">Not finished</span></div>';
 
           return `
